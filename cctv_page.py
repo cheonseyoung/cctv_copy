@@ -2,7 +2,7 @@ from socket import SOCK_STREAM, AF_INET, socket
 from flask import Flask, render_template, request
 import json
 import protocol
-
+import datetime
 app = Flask(__name__)
 
 n = int(input())
@@ -54,6 +54,9 @@ def methodd(num_list=[]):
             new_url_index=get_value[1]
 
         with open("/Users/zero/Desktop/save.txt","a", encoding='utf-8') as f:
+            f.write("< %s >\n" % (datetime.datetime.now()))
+            for i in range(n):
+                f.write("%s,%s\n" %(set_value[i][0], set_value[i][1]))
             f.write("%s,%s\n" %(new_file_path_index, new_url_index))
 
     get_value = value()
