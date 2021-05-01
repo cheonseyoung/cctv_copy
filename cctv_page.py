@@ -38,10 +38,9 @@ def methodd(num_list=[]):
 
         if  file_path_index != new_file_path_index and file_path_index!=get_value[0]:
             new_file_path_index=file_path_index
-            print('new_file_path_index:',i,new_file_path_index)
+
         if url_index != new_url_index and url_index!=get_value[1]:
             new_url_index=url_index
-            print('new_url_index:',i,new_url_index)
 
         set_value+=[[file_path_index,url_index]]
 
@@ -49,6 +48,11 @@ def methodd(num_list=[]):
         num_list += [i]
 
     if request.method == 'POST':
+        if new_file_path_index=='':
+            new_file_path_index=get_value[0]
+        elif new_url_index=='':
+            new_url_index=get_value[1]
+
         with open("/Users/zero/Desktop/save.txt","a", encoding='utf-8') as f:
             f.write("%s,%s\n" %(new_file_path_index, new_url_index))
 
