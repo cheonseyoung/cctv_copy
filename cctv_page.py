@@ -16,8 +16,8 @@ def value():
         line = line[-1].split(',')
 
     except:
-        line = ['','']
-    return [line[0], line[1][:-1]]
+        line = ['','','']
+    return [line[1], line[2][:-1]]
 
 
 ##submit버튼을 누를시 각 칸에 입력된 값들을 리스트로 저장하고, 이를 화면에 다시 보여주기 위한 작업. 새롭게 입력된 값들 중 마지막 값을 txt에 저장해줌
@@ -36,7 +36,7 @@ def methodd(num_list=[]):
         file_path_index= request.form['File_Path'+str(i)]
         url_index=request.form['Url'+str(i)]
 
-        if  file_path_index != new_file_path_index and file_path_index!=get_value[0]:
+        if file_path_index != new_file_path_index and file_path_index!=get_value[0]:
             new_file_path_index=file_path_index
 
         if url_index != new_url_index and url_index!=get_value[1]:
@@ -54,10 +54,11 @@ def methodd(num_list=[]):
             new_url_index=get_value[1]
 
         with open("/Users/zero/Desktop/save.txt","a", encoding='utf-8') as f:
+            f.write("\n")
             f.write("< %s >\n" % (datetime.datetime.now()))
             for i in range(n):
-                f.write("%s,%s\n" %(set_value[i][0], set_value[i][1]))
-            f.write("%s,%s\n" %(new_file_path_index, new_url_index))
+                f.write("%d th,%s,%s\n" %(i,set_value[i][0], set_value[i][1]))
+            f.write("%s,%s,%s\n" %('update_file_info',new_file_path_index, new_url_index))
 
     get_value = value()
     c = set_value
