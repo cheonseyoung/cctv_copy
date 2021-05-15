@@ -1,55 +1,7 @@
-from socket import SOCK_STREAM, AF_INET, socket
-from flask import Flask, render_template, request
-import json
-import protocol
-import datetime
-import test1
-
-app = Flask(__name__)
-n=test1.n
-
-## text파일에 저장된 file_path, url 정보를 value 함수를 이용 읽어오기 (마지막에 새롭게 업데이트 된 값들 중 마지막 값)
-def value():
-    f = open("/Users/zero/Desktop/test/save.txt", 'r')
-    try:
-        line = f.readlines()
-        line = line[-1].split(',')
-
-    except:
-        line = ['','','']
-    return [line[1], line[2][:-1]]
-
-## 처음 로딩시 보이는 화면 구현
-
-@app.route('/')
-def test():
-    ##이전 작업시 맨 마지막으로 저장된 값 txt에서 불러오기을 (txt에 맨 마지막줄 불러오기, 위에 value()함수 참고)
-    get_value = value()
-
-    ##반복되는 입력창 구현 (input text의 이름에 번호를 붙이기 위해 함수로 만들어줌.)
-    aa = ''
-
-
-    def aaa(i):
-        a = '''<form><p>
-             <span class="s21">''' + str(i) + '''th</span>
-             <span class="s22"> <input type="text" name="File_Path'''+ str(i) +'"'''' size=50 value=''' + get_value[0] + '''></span>
-             <span class="s23"> <input type="text" name="Url''' + str(i) + '"'''' size=50 value=''' + get_value[1] + ''' ></span>
-             <span class="s24"> <input type="submit" name="File_Open'''+ str(i) +'"'''' value="File Open" style="width: 100px;"></span>
-             <span class="s25"> <input type="submit" name="Start'''+ str(i) +'"'''' value="Start" style="width: 100px;"></span>
-             <span class="s26"> <input type="submit" name="Stop'''+ str(i) +'"'''' value="Stop" style="width: 100px;"></span>
-             <span class="s27"> <input type="submit" name="Clear'''+ str(i) +'"'''' value="Clear" style="width: 100px;"> </span></p></br>
-             </form>'''
-        return a
-
-
-    for i in range(1, n + 1):
-        aa += aaa(i)
-
-    return '''
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <title>VirtualCCTV</title>
   <style>
@@ -154,7 +106,7 @@ def test():
 
 <body bgcolor="#f1f1f0">
 <div>
-    <form action="/methodd" method="post">
+    <form action="/submit_button" method="post">
     <div class="container1">
         <span class="s11"> File Path </span>
         <span class="s12"> Url:Streaming address+port </span>
@@ -164,10 +116,21 @@ def test():
         <span class="s16"><input type="submit" value="All Clear" style="width: 100px;"></span>
         <span class="s28"> <input type="submit" value="정보 넘기기"></span>
     </div>
-    </br>
+        {% for i in range(1,num+1) %}
+        <br>
+            <p><span class="s21">{{i}}th</span>
+            <span class="s22"> <input type="text" name="File_Path{{i}}" size=50 value="{{arr[i][0]}}" ></span>
+            <span class="s23"> <input type="text" name="Url{{i}}" size=50 value="{{arr[i][1]}}" ></span>
+            <span><input type="hidden" name="list1" size=50 ></span>
+            <span><input type="hidden" name="list2" size=50 ></span>
+            <span class="s24"> <input type="submit" name="File_Open{{i}}" value="File Open" style="width: 100px;"></span>
+            <span class="s25"> <input type="submit" name="Start{{i}}" value="Start" style="width: 100px;"></span>
+            <span class="s26"> <input type="submit" name="Stop{{i}}" value="Stop" style="width: 100px;"></span>
+            <span class="s27"> <input type="submit" name="Clear{{i}}" value="Clear" style="width: 100px;"> </span>
+            </p>
+        {% endfor %}
+        </br>
 
-    <ul>
-    ''' + aa + '''
 </form>
 </div>
 
@@ -175,6 +138,4 @@ def test():
 
 </body>
 </html>
-'''
-if __name__ == '__main__':
-    app.run()
+
